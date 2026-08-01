@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Package, ShoppingCart, Tags, TrendingUp, Clock, CheckCircle2, Truck, XCircle } from "lucide-react";
+import { Package, ShoppingCart, Tags, TrendingUp, Clock, CircleCheck as CheckCircle2, Truck, Circle as XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase, type Product, type Order, type Category } from "@/lib/supabase";
 

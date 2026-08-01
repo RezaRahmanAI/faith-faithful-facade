@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Search, Clock, Truck, CheckCircle2, XCircle, ShoppingCart, X } from "lucide-react";
+import { Search, Clock, Truck, CircleCheck as CheckCircle2, Circle as XCircle, ShoppingCart, X } from "lucide-react";
 import { supabase, type Order } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin/orders")({
