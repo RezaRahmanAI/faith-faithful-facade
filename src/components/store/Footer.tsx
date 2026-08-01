@@ -61,7 +61,10 @@ export function Footer() {
 
       <div className="border-t border-topbar-foreground/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-5 text-xs text-topbar-foreground/60 sm:flex-row">
-          <p>© {new Date().getFullYear()} Nexora. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <p>© {new Date().getFullYear()} Nexora. All rights reserved.</p>
+            <a href="/admin" className="hover:text-sale">Admin Dashboard</a>
+          </div>
           <div className="flex items-center gap-4">
             <a href="/" aria-label="Facebook" className="hover:text-sale">
               <Facebook className="size-5" />
