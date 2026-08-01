@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Truck, ShieldCheck, RefreshCcw, Headphones, Star } from "lucide-react";
 import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Footer";
+import { products, type Product } from "@/lib/products";
+
 import hero from "@/assets/hero-sneakers.jpg";
 import showroom from "@/assets/showroom.jpg";
 import catPanjabi from "@/assets/cat-panjabi.jpg";
@@ -40,17 +42,6 @@ const topCategories = [
   { name: "Sneakers", img: catSneakers },
 ];
 
-const products = [
-  { name: "Embroidered Cotton Panjabi", price: 1890, old: 2450, img: catPanjabi, cat: "Panjabi" },
-  { name: "Oxford Formal Shirt — Navy", price: 1290, old: 1650, img: catShirt, cat: "Shirt" },
-  { name: "Premium Cotton Tee — Charcoal", price: 690, old: 950, img: catTshirt, cat: "T-shirt" },
-  { name: "Slim Fit Chino Trouser", price: 1490, old: 1990, img: catPants, cat: "Pant" },
-  { name: "Amber Oud Attar — 12ml", price: 850, old: 1200, img: catAttar, cat: "Attar" },
-  { name: "Court Low Sneaker — White", price: 2390, old: 3100, img: catSneakers, cat: "Sneakers" },
-  { name: "Mandarin Collar Panjabi", price: 2150, old: 2800, img: catPanjabi, cat: "Panjabi" },
-  { name: "Everyday Polo — Olive", price: 990, old: 1350, img: catTshirt, cat: "Polo" },
-];
-
 const perks = [
   { icon: Truck, title: "Free Delivery", text: "On orders over ৳2,000" },
   { icon: RefreshCcw, title: "7-Day Exchange", text: "Hassle-free returns" },
@@ -58,26 +49,32 @@ const perks = [
   { icon: Headphones, title: "Support 10am–10pm", text: "Call 09600 000 000" },
 ];
 
-function ProductCard({ p }: { p: (typeof products)[number] }) {
+function ProductCard({ p }: { p: Product }) {
   const off = Math.round(((p.old - p.price) / p.old) * 100);
   return (
     <article className="group border border-border bg-card transition-shadow hover:shadow-lg">
-      <div className="relative overflow-hidden bg-muted">
-        <span className="absolute left-0 top-3 z-10 bg-sale px-2 py-1 text-xs font-bold text-sale-foreground">
-          -{off}%
-        </span>
-        <img
-          src={p.img}
-          alt={p.name}
-          loading="lazy"
-          width={600}
-          height={600}
-          className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
+      <Link to="/product/$slug" params={{ slug: p.slug }} className="block">
+        <div className="relative overflow-hidden bg-muted">
+          <span className="absolute left-0 top-3 z-10 bg-sale px-2 py-1 text-xs font-bold text-sale-foreground">
+            -{off}%
+          </span>
+          <img
+            src={p.img}
+            alt={p.name}
+            loading="lazy"
+            width={600}
+            height={600}
+            className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      </Link>
       <div className="p-3">
         <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{p.cat}</p>
-        <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-medium">{p.name}</h3>
+        <Link to="/product/$slug" params={{ slug: p.slug }}>
+          <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-medium group-hover:text-sale">
+            {p.name}
+          </h3>
+        </Link>
         <div className="mt-1 flex items-center gap-1 text-sale">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star key={i} className="size-3.5 fill-current" />
@@ -89,13 +86,18 @@ function ProductCard({ p }: { p: (typeof products)[number] }) {
             ৳{p.old.toLocaleString()}
           </span>
         </div>
-        <button className="mt-3 w-full bg-primary py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-sale">
-          Add to Cart
-        </button>
+        <Link
+          to="/product/$slug"
+          params={{ slug: p.slug }}
+          className="mt-3 block bg-primary py-2 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-sale"
+        >
+          Select Options
+        </Link>
       </div>
     </article>
   );
 }
+
 
 function SectionTitle({ children }: { children: string }) {
   return (
