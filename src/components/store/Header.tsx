@@ -39,12 +39,13 @@ export function Header() {
 
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
-          <a href="/" className="flex items-center gap-2 shrink-0">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <span className="grid size-9 place-items-center rounded-sm bg-primary text-primary-foreground font-black">
               N
             </span>
             <span className="text-2xl font-extrabold tracking-tight">nexora</span>
-          </a>
+          </Link>
+
 
           <form
             className="hidden flex-1 md:flex"
@@ -77,9 +78,10 @@ export function Header() {
             <button aria-label="Cart" className="relative">
               <ShoppingBag className="size-7" strokeWidth={1.5} />
               <span className="absolute -right-2 -top-1 grid size-5 place-items-center rounded-full bg-sale text-[11px] font-bold text-sale-foreground">
-                0
+                {count}
               </span>
             </button>
+
           </div>
         </div>
       </div>
