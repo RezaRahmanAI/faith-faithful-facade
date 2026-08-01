@@ -23,6 +23,8 @@ const categories = [
 ];
 
 export function Header() {
+  const { count } = useCart();
+
   return (
     <header className="sticky top-0 z-50 bg-background">
       <div className="bg-topbar text-topbar-foreground">
