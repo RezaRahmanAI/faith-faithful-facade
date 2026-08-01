@@ -1,4 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { MapPin, Search, ShoppingBag, User, Phone, ChevronDown, Menu } from "lucide-react";
+import { useCart } from "@/lib/cart";
+
 
 const categories = [
   "Panjabi",
