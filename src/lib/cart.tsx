@@ -32,11 +32,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const idx = prev.findIndex(
             (i) => i.slug === item.slug && i.size === item.size && i.color === item.color,
           );
-          if (idx === -1) return [...prev, item];
+          const existing = idx === -1 ? undefined : prev[idx];
+          if (!existing) return [...prev, item];
           const next = [...prev];
-          next[idx] = { ...next[idx], qty: next[idx].qty + item.qty };
+          next[idx] = { ...existing, qty: existing.qty + item.qty };
           return next;
         }),
+
     }),
     [items],
   );
