@@ -48,7 +48,7 @@ function ProductPage() {
 }
 
 function ProductView({ product }: { product: Product }) {
-  const { addItem } = useCart();
+  const { addItem, setOpen } = useCart();
   const [active, setActive] = useState(0);
   const [size, setSize] = useState(product.sizes[0]!);
   const [color, setColor] = useState(product.colors[0]!.name);
@@ -70,6 +70,7 @@ function ProductView({ product }: { product: Product }) {
     toast.success("Added to cart", {
       description: `${product.name} · ${color} · Size ${size} · Qty ${qty}`,
     });
+    setOpen(true);
   };
 
   return (

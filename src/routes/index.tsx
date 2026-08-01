@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Truck, ShieldCheck, RefreshCcw, Headphones, Star } from "lucide-react";
 import { Header } from "@/components/store/Header";
 import { Footer } from "@/components/store/Footer";
+import { HeroSlider } from "@/components/store/HeroSlider";
+import { MarqueeBanner } from "@/components/store/MarqueeBanner";
 import { products, type Product } from "@/lib/products";
 
-import hero from "@/assets/hero-sneakers.jpg";
 import showroom from "@/assets/showroom.jpg";
 import catPanjabi from "@/assets/cat-panjabi.jpg";
 import catShirt from "@/assets/cat-shirt.jpg";
@@ -117,44 +118,10 @@ function Index() {
       <Header />
 
       <main>
+        <MarqueeBanner />
+
         <section className="mx-auto max-w-7xl px-4 pt-6">
-          <div className="relative overflow-hidden">
-            <img
-              src={hero}
-              alt="Lightweight sneakers built for everyday movement"
-              width={1600}
-              height={640}
-              className="aspect-[5/2] w-full object-cover"
-            />
-            <div className="absolute inset-0 flex flex-col justify-center gap-4 p-6 sm:p-14">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/70">
-                New Season
-              </p>
-              <h1 className="max-w-md text-4xl font-black uppercase leading-[0.95] tracking-tight text-primary sm:text-6xl">
-                Style in Motion
-              </h1>
-              <p className="max-w-xs text-sm text-primary/80">
-                Built for everyday movement with effortless comfort.
-              </p>
-              <div>
-                <a
-                  href="/"
-                  className="inline-block bg-primary px-7 py-3 text-sm font-bold uppercase tracking-wide text-primary-foreground transition-colors hover:bg-sale"
-                >
-                  Shop Now
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-4 flex justify-center gap-2">
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-8 ${i === 0 ? "bg-sale" : "bg-border"}`}
-                aria-hidden
-              />
-            ))}
-          </div>
+          <HeroSlider />
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-14">

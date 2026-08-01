@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { MapPin, Search, ShoppingBag, User, Phone, ChevronDown, Menu } from "lucide-react";
 import { useCart } from "@/lib/cart";
-
+import { MobileNav } from "@/components/store/MobileNav";
 
 const categories = [
   "Panjabi",
@@ -23,98 +24,119 @@ const categories = [
 ];
 
 export function Header() {
-  const { count } = useCart();
+  const { count, setOpen } = useCart();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background">
-      <div className="bg-topbar text-topbar-foreground">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-xs font-semibold tracking-wide">
-          <span className="inline-flex items-center gap-2">
-            <MapPin className="size-4 text-sale" />
-            STORE LOCATIONS
-          </span>
-          <span className="inline-flex items-center gap-1">
-            Settings <ChevronDown className="size-3.5" />
-          </span>
-        </div>
-      </div>
+    <>
+      <MobileNav open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
 
-      <div className="border-b border-border">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="grid size-9 place-items-center rounded-sm bg-primary text-primary-foreground font-black">
-              N
+      <header className="sticky top-0 z-40 bg-background">
+        <div className="bg-topbar text-topbar-foreground">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 text-xs font-semibold tracking-wide">
+            <span className="inline-flex items-center gap-2">
+              <MapPin className="size-4 text-sale" />
+              STORE LOCATIONS
             </span>
-            <span className="text-2xl font-extrabold tracking-tight">nexora</span>
-          </Link>
+            <span className="inline-flex items-center gap-1">
+              Settings <ChevronDown className="size-3.5" />
+            </span>
+          </div>
+        </div>
 
-
-          <form
-            className="hidden flex-1 md:flex"
-            onSubmit={(e) => e.preventDefault()}
-            role="search"
-          >
-            <input
-              type="search"
-              placeholder="Search for Products..."
-              aria-label="Search for products"
-              className="h-11 w-full border border-border px-4 text-sm outline-none focus:border-ring"
-            />
+        <div className="border-b border-border">
+          <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4">
             <button
-              type="submit"
-              aria-label="Search"
-              className="grid h-11 w-14 shrink-0 place-items-center bg-primary text-primary-foreground"
+              className="md:hidden"
+              onClick={() => setMobileNavOpen(true)}
+              aria-label="Open menu"
             >
-              <Search className="size-5" />
+              <Menu className="size-6" />
             </button>
-          </form>
 
-          <div className="ml-auto flex items-center gap-5">
-            <button className="hidden items-center gap-2 text-left sm:flex">
-              <User className="size-7 text-muted-foreground" strokeWidth={1.5} />
-              <span className="leading-tight">
-                <span className="block text-xs text-muted-foreground">Sign In</span>
-                <span className="block text-sm font-semibold">Your Account</span>
+            <Link to="/" className="flex items-center gap-2 shrink-0">
+              <span className="grid size-9 place-items-center rounded-sm bg-primary text-primary-foreground font-black">
+                N
               </span>
-            </button>
-            <button aria-label="Cart" className="relative">
-              <ShoppingBag className="size-7" strokeWidth={1.5} />
-              <span className="absolute -right-2 -top-1 grid size-5 place-items-center rounded-full bg-sale text-[11px] font-bold text-sale-foreground">
-                {count}
-              </span>
-            </button>
+              <span className="text-2xl font-extrabold tracking-tight">nexora</span>
+            </Link>
 
-          </div>
-        </div>
-      </div>
-
-      <div className="border-b border-border">
-        <div className="mx-auto flex max-w-7xl items-center gap-x-6 gap-y-2 px-4 py-3">
-          <Menu className="size-5 md:hidden" />
-          <nav className="hidden flex-1 flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium md:flex">
-            {categories.map((c) => (
-              <a
-                key={c}
-                href="/"
-                className="inline-flex items-center gap-1 transition-colors hover:text-sale"
+            <form
+              className="hidden flex-1 md:flex"
+              onSubmit={(e) => e.preventDefault()}
+              role="search"
+            >
+              <input
+                type="search"
+                placeholder="Search for Products..."
+                aria-label="Search for products"
+                className="h-11 w-full border border-border px-4 text-sm outline-none focus:border-ring"
+              />
+              <button
+                type="submit"
+                aria-label="Search"
+                className="grid h-11 w-14 shrink-0 place-items-center bg-primary text-primary-foreground"
               >
-                {c}
-                <ChevronDown className="size-3.5 text-muted-foreground" />
-              </a>
-            ))}
-            <a href="/" className="font-bold text-sale">
-              FLASH SALE
-            </a>
-          </nav>
-          <div className="ml-auto hidden items-center gap-2 lg:flex">
-            <Phone className="size-6 text-sale" strokeWidth={1.5} />
-            <span className="leading-tight">
-              <span className="block text-xs text-muted-foreground">Hotline:</span>
-              <span className="block text-sm font-bold">09600 000 000</span>
-            </span>
+                <Search className="size-5" />
+              </button>
+            </form>
+
+            <div className="ml-auto flex items-center gap-5">
+              <button className="hidden items-center gap-2 text-left sm:flex">
+                <User className="size-7 text-muted-foreground" strokeWidth={1.5} />
+                <span className="leading-tight">
+                  <span className="block text-xs text-muted-foreground">Sign In</span>
+                  <span className="block text-sm font-semibold">Your Account</span>
+                </span>
+              </button>
+              <button
+                aria-label="Cart"
+                onClick={() => setOpen(true)}
+                className="relative cursor-pointer"
+              >
+                <ShoppingBag className="size-7" strokeWidth={1.5} />
+                <span className="absolute -right-2 -top-1 grid size-5 place-items-center rounded-full bg-sale text-[11px] font-bold text-sale-foreground">
+                  {count}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+
+        <div className="border-b border-border">
+          <div className="mx-auto flex max-w-7xl items-center gap-x-6 gap-y-2 px-4 py-3">
+            <button
+              className="flex items-center gap-2 text-sm font-bold md:hidden"
+              onClick={() => setMobileNavOpen(true)}
+            >
+              <Menu className="size-5" />
+              All Categories
+            </button>
+            <nav className="hidden flex-1 flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium md:flex">
+              {categories.map((c) => (
+                <a
+                  key={c}
+                  href="/"
+                  className="inline-flex items-center gap-1 transition-colors hover:text-sale"
+                >
+                  {c}
+                  <ChevronDown className="size-3.5 text-muted-foreground" />
+                </a>
+              ))}
+              <a href="/" className="font-bold text-sale">
+                FLASH SALE
+              </a>
+            </nav>
+            <div className="ml-auto hidden items-center gap-2 lg:flex">
+              <Phone className="size-6 text-sale" strokeWidth={1.5} />
+              <span className="leading-tight">
+                <span className="block text-xs text-muted-foreground">Hotline:</span>
+                <span className="block text-sm font-bold">09600 000 000</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }
