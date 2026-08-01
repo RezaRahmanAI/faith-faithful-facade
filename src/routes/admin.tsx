@@ -1,21 +1,33 @@
-import { createFileRoute, Outlet, Link, redirect } from "@tanstack/react-router";
-import { LayoutDashboard, Package, ShoppingCart, Tags, Store, LogOut } from "lucide-react";
+import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
+import { LayoutDashboard, Package, ShoppingCart, Tags, Store, LogOut, Rocket, Clock, ChartBar as BarChart3 } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-const navItems = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/products", label: "Products", icon: Package, end: false },
-  { to: "/admin/orders", label: "Orders", icon: ShoppingCart, end: false },
-  { to: "/admin/categories", label: "Categories", icon: Tags, end: false },
+const navSections = [
+  {
+    label: "Store",
+    items: [
+      { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
+      { to: "/admin/products", label: "Products", icon: Package, end: false },
+      { to: "/admin/orders", label: "Orders", icon: ShoppingCart, end: false },
+      { to: "/admin/categories", label: "Categories", icon: Tags, end: false },
+    ],
+  },
+  {
+    label: "Marketing",
+    items: [
+      { to: "/admin/landing-pages", label: "Landing Pages", icon: Rocket, end: false },
+      { to: "/admin/incomplete-orders", label: "Incomplete Orders", icon: Clock, end: false },
+      { to: "/admin/analytics", label: "Campaign Analytics", icon: BarChart3, end: false },
+    ],
+  },
 ];
 
 function AdminLayout() {
   return (
     <div className="flex min-h-screen bg-muted/30">
-      {/* Sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-background md:flex">
         <div className="flex items-center gap-2 border-b border-border px-6 py-5">
           <span className="grid size-8 place-items-center rounded-sm bg-primary text-primary-foreground font-black text-sm">
@@ -26,17 +38,26 @@ function AdminLayout() {
             Admin
           </span>
         </div>
-        <nav className="flex-1 space-y-1 p-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&.active]:bg-primary [&.active]:text-primary-foreground"
-            >
-              <item.icon className="size-4.5" />
-              {item.label}
-            </Link>
+        <nav className="flex-1 space-y-4 overflow-y-auto p-4">
+          {navSections.map((section) => (
+            <div key={section.label}>
+              <p className="mb-1.5 px-3 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/60">
+                {section.label}
+              </p>
+              <div className="space-y-1">
+                {section.items.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    end={item.end}
+                    className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&.active]:bg-primary [&.active]:text-primary-foreground"
+                  >
+                    <item.icon className="size-4.5" />
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
         <div className="border-t border-border p-4">
@@ -54,7 +75,6 @@ function AdminLayout() {
         </div>
       </aside>
 
-      {/* Mobile top bar */}
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background px-4 py-3 md:hidden">
         <div className="flex items-center gap-2">
           <span className="grid size-7 place-items-center rounded-sm bg-primary text-primary-foreground font-black text-xs">
@@ -67,9 +87,8 @@ function AdminLayout() {
         </Link>
       </div>
 
-      {/* Mobile nav */}
       <nav className="flex gap-1 overflow-x-auto border-b border-border bg-background px-2 py-2 md:hidden">
-        {navItems.map((item) => (
+        {navSections.flatMap((s) => s.items).map((item) => (
           <Link
             key={item.to}
             to={item.to}
@@ -82,7 +101,6 @@ function AdminLayout() {
         ))}
       </nav>
 
-      {/* Main content */}
       <main className="flex-1 overflow-x-hidden">
         <Outlet />
       </main>

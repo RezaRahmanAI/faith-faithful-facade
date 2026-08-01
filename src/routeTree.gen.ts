@@ -12,10 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
+import { Route as AdminIncompleteOrdersRouteImport } from './routes/admin/incomplete-orders'
+import { Route as AdminLandingPagesRouteImport } from './routes/admin/landing-pages'
 import { Route as AdminOrdersRouteImport } from './routes/admin/orders'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
+import { Route as LSlugRouteImport } from './routes/l.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as AdminLandingPagesSlugEditRouteImport } from './routes/admin/landing-pages.$slug.edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,9 +37,24 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIncompleteOrdersRoute = AdminIncompleteOrdersRouteImport.update({
+  id: '/incomplete-orders',
+  path: '/incomplete-orders',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLandingPagesRoute = AdminLandingPagesRouteImport.update({
+  id: '/landing-pages',
+  path: '/landing-pages',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminOrdersRoute = AdminOrdersRouteImport.update({
@@ -47,71 +67,113 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => AdminRoute,
 } as any)
+const LSlugRoute = LSlugRouteImport.update({
+  id: '/l/$slug',
+  path: '/l/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductSlugRoute = ProductSlugRouteImport.update({
   id: '/product/$slug',
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLandingPagesSlugEditRoute =
+  AdminLandingPagesSlugEditRouteImport.update({
+    id: '/$slug/edit',
+    path: '/$slug/edit',
+    getParentRoute: () => AdminLandingPagesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/incomplete-orders': typeof AdminIncompleteOrdersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRouteWithChildren
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/l/$slug': typeof LSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/landing-pages/$slug/edit': typeof AdminLandingPagesSlugEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/incomplete-orders': typeof AdminIncompleteOrdersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRouteWithChildren
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/l/$slug': typeof LSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/landing-pages/$slug/edit': typeof AdminLandingPagesSlugEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/categories': typeof AdminCategoriesRoute
+  '/admin/incomplete-orders': typeof AdminIncompleteOrdersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRouteWithChildren
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/l/$slug': typeof LSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/landing-pages/$slug/edit': typeof AdminLandingPagesSlugEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/admin'
+    | '/admin/analytics'
     | '/admin/categories'
+    | '/admin/incomplete-orders'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
+    | '/l/$slug'
     | '/product/$slug'
     | '/admin/'
+    | '/admin/landing-pages/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/analytics'
     | '/admin/categories'
+    | '/admin/incomplete-orders'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
+    | '/l/$slug'
     | '/product/$slug'
     | '/admin'
+    | '/admin/landing-pages/$slug/edit'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/admin/analytics'
     | '/admin/categories'
+    | '/admin/incomplete-orders'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
+    | '/l/$slug'
     | '/product/$slug'
     | '/admin/'
+    | '/admin/landing-pages/$slug/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  LSlugRoute: typeof LSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
@@ -138,11 +200,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories': {
       id: '/admin/categories'
       path: '/categories'
       fullPath: '/admin/categories'
       preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/incomplete-orders': {
+      id: '/admin/incomplete-orders'
+      path: '/incomplete-orders'
+      fullPath: '/admin/incomplete-orders'
+      preLoaderRoute: typeof AdminIncompleteOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/landing-pages': {
+      id: '/admin/landing-pages'
+      path: '/landing-pages'
+      fullPath: '/admin/landing-pages'
+      preLoaderRoute: typeof AdminLandingPagesRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/orders': {
@@ -159,6 +242,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/l/$slug': {
+      id: '/l/$slug'
+      path: '/l/$slug'
+      fullPath: '/l/$slug'
+      preLoaderRoute: typeof LSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$slug': {
       id: '/product/$slug'
       path: '/product/$slug'
@@ -166,18 +256,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/landing-pages/$slug/edit': {
+      id: '/admin/landing-pages/$slug/edit'
+      path: '/$slug/edit'
+      fullPath: '/admin/landing-pages/$slug/edit'
+      preLoaderRoute: typeof AdminLandingPagesSlugEditRouteImport
+      parentRoute: typeof AdminLandingPagesRoute
+    }
   }
 }
 
+interface AdminLandingPagesRouteChildren {
+  AdminLandingPagesSlugEditRoute: typeof AdminLandingPagesSlugEditRoute
+}
+
+const AdminLandingPagesRouteChildren: AdminLandingPagesRouteChildren = {
+  AdminLandingPagesSlugEditRoute: AdminLandingPagesSlugEditRoute,
+}
+
+const AdminLandingPagesRouteWithChildren =
+  AdminLandingPagesRoute._addFileChildren(AdminLandingPagesRouteChildren)
+
 interface AdminRouteChildren {
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminCategoriesRoute: typeof AdminCategoriesRoute
+  AdminIncompleteOrdersRoute: typeof AdminIncompleteOrdersRoute
+  AdminLandingPagesRoute: typeof AdminLandingPagesRouteWithChildren
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminCategoriesRoute: AdminCategoriesRoute,
+  AdminIncompleteOrdersRoute: AdminIncompleteOrdersRoute,
+  AdminLandingPagesRoute: AdminLandingPagesRouteWithChildren,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -188,6 +302,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  LSlugRoute: LSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
