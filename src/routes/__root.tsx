@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { logError } from "../lib/error-logger";
+import { OfflineBanner } from "../lib/use-offline";
 import { CartProvider } from "../lib/cart";
 import { CartDrawer } from "../components/store/CartDrawer";
 import { Toaster } from "../components/ui/sonner";
@@ -42,6 +44,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
+    logError(error, { boundary: "tanstack_root_error_component" });
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
@@ -127,6 +130,7 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <CartDrawer />
+        <OfflineBanner />
         <Toaster position="bottom-right" />
       </CartProvider>
     </QueryClientProvider>
