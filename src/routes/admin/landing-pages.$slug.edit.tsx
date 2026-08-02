@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   ArrowLeft,
   Save,
@@ -8,8 +8,6 @@ import {
   GripVertical,
   Eye,
   EyeOff,
-  ChevronUp,
-  ChevronDown,
   Settings,
   X,
   Rocket,
@@ -80,20 +78,42 @@ function LandingPageBuilder() {
     load();
   }, [load]);
 
-  async function moveSection(id: string, direction: "up" | "down") {
-    const index = sections.findIndex((s) => s.id === id);
-    if (index < 0) return;
-    const newIndex = direction === "up" ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= sections.length) return;
+  const dragIndex = useRef<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
+  async function reorderSections(fromIndex: number, toIndex: number) {
+    if (fromIndex === toIndex) return;
     const reordered = [...sections];
-    [reordered[index], reordered[newIndex]] = [reordered[newIndex], reordered[index]];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(toIndex, 0, moved);
 
+    setSections(reordered);
     const updates = reordered.map((s, i) => ({ id: s.id, sort_order: i }));
     for (const u of updates) {
       await supabase.from("landing_page_sections").update({ sort_order: u.sort_order }).eq("id", u.id);
     }
-    setSections(reordered);
+  }
+
+  function handleDragStart(index: number) {
+    dragIndex.current = index;
+  }
+
+  function handleDragOver(e: React.DragEvent, index: number) {
+    e.preventDefault();
+    setDragOverIndex(index);
+  }
+
+  function handleDrop(index: number) {
+    if (dragIndex.current !== null) {
+      reorderSections(dragIndex.current, index);
+    }
+    dragIndex.current = null;
+    setDragOverIndex(null);
+  }
+
+  function handleDragEnd() {
+    dragIndex.current = null;
+    setDragOverIndex(null);
   }
 
   async function toggleSection(section: LandingPageSection) {
@@ -248,27 +268,16 @@ function LandingPageBuilder() {
                 return (
                   <div
                     key={section.id}
-                    className={`flex items-center gap-2 border border-border bg-background p-3 transition-opacity ${
+                    draggable
+                    onDragStart={() => handleDragStart(index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDrop={() => handleDrop(index)}
+                    onDragEnd={handleDragEnd}
+                    className={`flex items-center gap-2 border border-border bg-background p-3 transition-all ${
                       !section.is_enabled ? "opacity-50" : ""
-                    }`}
+                    } ${dragOverIndex === index && dragIndex.current !== index ? "border-primary border-t-2" : ""} ${dragIndex.current === index ? "opacity-40" : ""} cursor-grab active:cursor-grabbing`}
                   >
-                    <div className="flex flex-col">
-                      <button
-                        onClick={() => moveSection(section.id, "up")}
-                        disabled={index === 0}
-                        className="text-muted-foreground hover:text-foreground disabled:opacity-20"
-                      >
-                        <ChevronUp className="size-4" />
-                      </button>
-                      <GripVertical className="size-4 text-muted-foreground/30" />
-                      <button
-                        onClick={() => moveSection(section.id, "down")}
-                        disabled={index === sections.length - 1}
-                        className="text-muted-foreground hover:text-foreground disabled:opacity-20"
-                      >
-                        <ChevronDown className="size-4" />
-                      </button>
-                    </div>
+                    <GripVertical className="size-5 shrink-0 text-muted-foreground/40" />
 
                     <span className="text-lg">{meta?.icon ?? "📦"}</span>
                     <div className="flex-1">

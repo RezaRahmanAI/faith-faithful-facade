@@ -165,3 +165,23 @@ export type RecoveryNote = {
   author: string | null;
   created_at: string;
 };
+
+export type RecoveryAssignment = {
+  id: string;
+  draft_order_id: string;
+  staff_name: string;
+  assigned_at: string;
+};
+
+export type ErrorLog = {
+  id: string;
+  error_type: string;
+  severity: string;
+  message: string;
+  stack: string | null;
+  route: string | null;
+  user_agent: string | null;
+  metadata: Record<string, unknown>;
+  is_resolved: boolean;
+  created_at: string;
+};
